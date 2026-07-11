@@ -1,6 +1,6 @@
 {
   "name": "vpsops",
-  "version": "0.1.0+codex.20260711060039",
+  "version": "0.1.0+codex.20260711071145",
   "description": "Secure VPS setup, relay design, auditing, and maintenance.",
   "author": {
     "name": "Nic"
@@ -20,6 +20,9 @@
       "Use $vpsops to securely bootstrap my new VPS.",
       "Use $vpsops to audit this VPS without changing it.",
       "Use $vpsops to design an optional relay and landing topology."
-    ]
+    ],
+    "composerIcon": "./assets/vpsops-icon.png",
+    "logo": "./assets/vpsops-icon.png",
+    "logoDark": "./assets/vpsops-icon.png"
   }
 }
