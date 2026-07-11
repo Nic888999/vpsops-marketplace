@@ -1,0 +1,22 @@
+{
+  "name": "vpsops",
+  "version": "0.1.0",
+  "description": "Secure VPS setup, relay design, auditing, and maintenance.",
+  "author": {
+    "name": "Nic"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "VPSOps",
+    "shortDescription": "Secure VPS setup, relay design, and health checks.",
+    "longDescription": "A reusable workflow for safe first access, single VPS deployment, optional relay topologies, and repeatable health audits.",
+    "developerName": "Nic",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "Use $vpsops to securely bootstrap my new VPS.",
+      "Use $vpsops to audit this VPS without changing it.",
+      "Use $vpsops to design an optional relay and landing topology."
+    ]
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "VPS 部署与中转运维"
+  short_description: "Secure VPS deployment, relay topology, auditing and maintenance"
+  default_prompt: "Use $vpsops to plan, secure, deploy, or audit my VPS setup."
