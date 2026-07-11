@@ -1,4 +1,4 @@
 interface:
-  display_name: "VPS 部署与中转运维"
+  display_name: "VPSOps"
   short_description: "Secure VPS, client, relay, monitoring, and maintenance"
   default_prompt: "Use $vpsops to plan, secure, deploy, configure clients, monitor, or audit my VPS setup."

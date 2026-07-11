@@ -1,10 +1,21 @@
 {
   "name": "vpsops",
-  "version": "0.1.0+codex.20260711163335",
+  "version": "0.1.1",
   "description": "Secure VPS setup, client delivery, relay design, monitoring, auditing, and maintenance.",
   "author": {
     "name": "Nic"
   },
+  "homepage": "https://github.com/Nic888999/vpsops-marketplace",
+  "repository": "https://github.com/Nic888999/vpsops-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "vps",
+    "ssh",
+    "docker",
+    "vless",
+    "relay",
+    "monitoring"
+  ],
   "skills": "./skills/",
   "interface": {
     "displayName": "VPSOps",
@@ -16,12 +27,11 @@
       "Interactive",
       "Write"
     ],
+    "websiteURL": "https://github.com/Nic888999/vpsops-marketplace",
     "defaultPrompt": [
       "Use $vpsops to securely bootstrap my new VPS.",
       "Use $vpsops to audit this VPS without changing it.",
-      "Use $vpsops to design an optional relay and landing topology.",
-      "Use $vpsops to configure my local proxy clients and routing.",
-      "Use $vpsops to add private daily VPS reports and alerts."
+      "Use $vpsops to design an optional relay and landing topology."
     ],
     "composerIcon": "./assets/vpsops-icon.png",
     "logo": "./assets/vpsops-icon.png",
