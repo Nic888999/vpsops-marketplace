@@ -1,6 +1,6 @@
 ---
 name: vpsops
-description: Securely plan, bootstrap, deploy, relay, audit, and maintain personal VPS servers. Use for first SSH access with password or key, Ubuntu server hardening, Docker services, single-node deployments, relay-plus-egress topologies, IPv4/IPv6 evaluation, safe updates, log rotation, and repeatable VPS health checks.
+description: Securely plan, bootstrap, deploy, relay, audit, monitor, and maintain personal VPS services. Use for first SSH access, VLESS Reality, optional relays, local proxy clients, Telegram reporting, lifecycle changes, and repeatable health checks.
 ---
 
 # VPS Relay Operations
@@ -14,6 +14,7 @@ Use this skill for personal VPS administration. Adapt to the user's actual topol
 - Preserve one working login path. Do not disable root or password SSH until a second session has verified the new user and key.
 - Back up a changed config with a timestamp, validate syntax, then reload only the affected service. Do not restart a local proxy client unless the user explicitly asks.
 - Choose Ubuntu 24.04 LTS by default for a new general-purpose VPS. Use the provider image or another supported LTS only when compatibility, an existing fleet, or provider support requires it.
+- Keep user-specific providers, addresses, domains, bot tokens, chat IDs, account data, and routing exceptions out of this skill. Use only runtime configuration with restrictive permissions.
 
 ## Select the architecture
 
@@ -31,6 +32,18 @@ Choose one path:
 | Existing VPS needing only a check | Run audit only; propose fixes separately |
 
 Read [references/bootstrap.md](references/bootstrap.md) before first-access or SSH-hardening work. Read [references/topologies.md](references/topologies.md) for multi-machine work. Read [references/operations.md](references/operations.md) for the baseline, tests, and maintenance policy.
+
+## Optional Operating Modules
+
+Read only the relevant reference before implementing it:
+
+| Need | Reference | Rule |
+| --- | --- | --- |
+| Deploy a personal VLESS + TCP + REALITY service | [references/proxy-deployment.md](references/proxy-deployment.md) | Generate runtime secrets on the server; pin Xray; test a real client before retiring a path. |
+| Deliver local proxy clients and routing | [references/client-delivery.md](references/client-delivery.md) | Preserve the current client; back up first; user controls restart. |
+| Daily reports, alerts, traffic, expiry tracking | [references/monitoring.md](references/monitoring.md) | Choose a stable controller; external observation is optional, not assumed. |
+| Add, replace, retire, refund, or restore VPS nodes | [references/lifecycle.md](references/lifecycle.md) | Maintain a user-approved non-secret inventory and a tested rollback. |
+| Prove a path works or diagnose a slowdown | [references/acceptance.md](references/acceptance.md) | Test from the real client and use measured evidence. |
 
 ## Choose The Engagement Mode
 
@@ -53,6 +66,7 @@ Read [references/existing-systems.md](references/existing-systems.md) before wor
 4. **Deploy**: use the smallest suitable deployment. For a relay, expose only the relay listener; restrict the landing listener to trusted relay addresses. For a standalone app, expose only ports the app needs.
 5. **Validate**: check service state, listening sockets, firewall, remote reachability, disk, and logs. Test an application path, not only ICMP or a public test IP.
 6. **Operate**: use the audit script for read-only reviews. Monitor at several times before declaring one route superior. Keep backups and document rollback.
+7. **Deliver**: when a proxy path is deployed, configure the user's requested local clients, routing, fallbacks, and acceptance tests. A server deployment is not complete until a real client path works. Then explicitly offer opt-in monitoring/reports and a non-secret inventory; do not install either without approval.
 
 For an existing system, start at **Validate** and **Operate**, not at Bootstrap. Never rerun first-access setup, regenerate credentials, overwrite service configuration, or restart a healthy service merely because the skill was invoked in a new conversation.
 
@@ -90,3 +104,4 @@ For password-only first access, use normal interactive `ssh` or the provider con
 - For an explicitly requested personal proxy or relay, default to VLESS + TCP + REALITY. Do not substitute VMess, Trojan, AnyTLS, or another protocol merely because it is newer or popular in a tutorial. Change protocol only for a stated compatibility, security, or measured performance reason.
 - Default to daily security updates, weekly package-cache cleanup, and no automatic reboot. Schedule operating-system upgrades and major container image upgrades deliberately.
 - Keep monitoring data only as long as it serves a decision. Set retention and stop temporary high-frequency probes once the comparison is complete.
+- A monitoring controller cannot alert when it is itself offline. Add an independent observer only when the user has or chooses a separate machine; otherwise state this coverage gap plainly.
