@@ -32,6 +32,19 @@ Choose one path:
 
 Read [references/bootstrap.md](references/bootstrap.md) before first-access or SSH-hardening work. Read [references/topologies.md](references/topologies.md) for multi-machine work. Read [references/operations.md](references/operations.md) for the baseline, tests, and maintenance policy.
 
+## Choose The Engagement Mode
+
+Do not assume every request starts from a blank server. If the user names an existing VPS, provides working access, asks for a check, or leaves the state unclear, start in **existing-system mode**. Use new-build mode only when the user explicitly asks to create or rebuild a server.
+
+| Request | First action | Write permission |
+| --- | --- | --- |
+| New VPS or rebuild | Confirm initial access, then bootstrap | Only after explicit approval |
+| Existing VPS health/security check | Read-only discovery and audit | None |
+| Existing VPS change or expansion | Audit first, then present a change/rollback plan | Wait for explicit approval |
+| Incident, slowdown, or outage | Collect evidence and identify the fault domain | Fix only if requested |
+
+Read [references/existing-systems.md](references/existing-systems.md) before working on an existing VPS. In existing-system mode, discover the real OS, access posture, firewall, listeners, services, containers, timers, logs, storage, and topology before offering changes. Report the current state first, then ask whether the user wants to keep it, remediate a finding, add a VPS or relay, modify a route, or perform a planned upgrade.
+
 ## Workflow
 
 1. **Preflight**: identify the working access route. Record non-secret facts only. Confirm the role of every machine and the user's downtime tolerance.
@@ -40,6 +53,8 @@ Read [references/bootstrap.md](references/bootstrap.md) before first-access or S
 4. **Deploy**: use the smallest suitable deployment. For a relay, expose only the relay listener; restrict the landing listener to trusted relay addresses. For a standalone app, expose only ports the app needs.
 5. **Validate**: check service state, listening sockets, firewall, remote reachability, disk, and logs. Test an application path, not only ICMP or a public test IP.
 6. **Operate**: use the audit script for read-only reviews. Monitor at several times before declaring one route superior. Keep backups and document rollback.
+
+For an existing system, start at **Validate** and **Operate**, not at Bootstrap. Never rerun first-access setup, regenerate credentials, overwrite service configuration, or restart a healthy service merely because the skill was invoked in a new conversation.
 
 ## Safe change protocol
 
