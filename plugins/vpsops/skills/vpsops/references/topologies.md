@@ -16,6 +16,16 @@ client -> relay public listener -> authenticated/encrypted service on landing ->
 - Landing: allow SSH as needed; allow the service port only from known relay addresses. Do not expose an unnecessary direct listener.
 - Keep an independently tested fallback: another relay, direct landing access, or a separate provider. Do not make a fallback depend on the same failing relay.
 
+## Personal Proxy Default
+
+Apply this section only when the user explicitly requests a personal proxy, landing server, or relay path. The default stack is **VLESS + TCP + REALITY** on Xray. When a relay is needed, use HAProxy as a layer-4 TCP forwarder to the fixed landing listener.
+
+- Do not use an unrelated protocol by default because a script or tutorial uses it.
+- Pin the Xray container image to a tested version; never use `latest` for unattended deployments.
+- On the landing machine, permit the service listener only from known relay addresses when relays exist.
+- Verify configuration syntax and a real client connection before retiring an older path.
+- Keep proxy routing separate from ordinary website, Docker, database, and panel deployments.
+
 ## Multi-relay And Dual Stack
 
 Treat every IPv4 or IPv6 path as independent. Measure each path from the actual client network. Retain IPv6 as a selectable path only when the local ISP, client mode, firewall, DNS, and remote route are all stable. Do not claim a route is optimized from a single test IP or one traceroute.

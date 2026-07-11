@@ -26,6 +26,7 @@ Choose one path:
 | One VPS for an app, website, or private service | Bootstrap -> single-node baseline -> deploy -> audit |
 | One public egress VPS | Bootstrap -> landing baseline -> deploy -> audit |
 | Relay plus egress VPS | Bootstrap each -> landing baseline -> relay baseline -> path tests |
+| Personal proxy, relay, or landing requested explicitly | Use the proxy default: VLESS + TCP + REALITY; use HAProxy only as an L4 relay when a separate relay is needed |
 | Multiple relays or dual stack | Add independent paths, then compare stability over time |
 | Existing VPS needing only a check | Run audit only; propose fixes separately |
 
@@ -65,5 +66,6 @@ For password-only first access, use normal interactive `ssh` or the provider con
 
 - Prefer measured reliability over a single low latency result. Compare timeout rate, median, P95, loss, and real application loading across time windows.
 - IPv6 is an additional path, not an unconditional replacement for IPv4. Keep both only when each route is independently reachable and stable from the client network.
+- For an explicitly requested personal proxy or relay, default to VLESS + TCP + REALITY. Do not substitute VMess, Trojan, AnyTLS, or another protocol merely because it is newer or popular in a tutorial. Change protocol only for a stated compatibility, security, or measured performance reason.
 - Default to daily security updates, weekly package-cache cleanup, and no automatic reboot. Schedule operating-system upgrades and major container image upgrades deliberately.
 - Keep monitoring data only as long as it serves a decision. Set retention and stop temporary high-frequency probes once the comparison is complete.
