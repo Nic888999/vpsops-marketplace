@@ -67,6 +67,12 @@ For every configuration change:
 5. Verify the original access path, service health, listening port, and firewall after the change.
 6. State what changed, what was verified, and any residual risk.
 
+## Update Awareness
+
+For a substantial VPS request, identify the installed `vpsops` plugin version. When network access is available, compare it with the public marketplace manifest at `Nic888999/vpsops-marketplace`. If a newer version exists, state that an update is available before starting work and ask whether to install it.
+
+Never force an update, and never treat a plugin update as permission to modify a VPS. If the user approves, refresh the `vpsops-marketplace` source, reinstall `vpsops@vpsops-marketplace`, then start a new task before using newly added instructions. If version checking is unavailable, proceed with the installed version and state that the update status could not be verified.
+
 ## Audit helper
 
 Run [scripts/vps-audit.sh](scripts/vps-audit.sh) for a read-only report after a server is reachable by SSH key:

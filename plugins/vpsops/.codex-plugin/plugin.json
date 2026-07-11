@@ -1,6 +1,6 @@
 {
   "name": "vpsops",
-  "version": "0.1.0+codex.20260711055340",
+  "version": "0.1.0+codex.20260711060039",
   "description": "Secure VPS setup, relay design, auditing, and maintenance.",
   "author": {
     "name": "Nic"
