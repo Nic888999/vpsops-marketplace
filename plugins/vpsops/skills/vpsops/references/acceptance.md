@@ -18,6 +18,10 @@ Do not accept a REALITY deployment because the listener is open or the container
 
 Do not infer a user's return path, app experience, or a "premium route" from a test IP alone.
 
+## Final Handoff
+
+Do not call the work complete until the report states: the copy-ready terminal SSH command; provider-console recovery route; verified sudo model; native/Docker deployment and pinned version; intended ports/firewall; whether IPv6 was offered, configured, declined, or unavailable; REALITY candidate comparison and selected rationale; real-client app/core and acceptance status; remote and local changes separated; backups/rollback; temporary-secret cleanup; and any credential that should be rotated. Never claim that existing routing was unaffected without comparing and verifying it.
+
 ## Incident Order
 
 Start read-only and classify the fault before changing settings:

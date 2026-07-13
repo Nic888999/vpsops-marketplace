@@ -10,8 +10,11 @@ Use this skill for personal VPS administration. Adapt to the user's actual topol
 ## Non-negotiable rules
 
 - Treat credentials, private keys, client subscription data, and service secrets as session-only. Never write them into the skill, scripts, reports, git, or terminal output.
+- Do not ask the user to paste a password or private-key contents into chat. Use an interactive prompt, provider console, or an existing local key path. If a secret was already shared, do not repeat it and recommend rotation after a recovery path is verified.
 - Start read-only unless the user explicitly authorizes changes. State the planned change and rollback before writing.
-- Preserve one working login path. Do not disable root or password SSH until a second session has verified the new user and key.
+- Treat the VPS, provider panel, local files, active proxy runtime, and monitoring as separate permission scopes. Approval to deploy a VPS does not authorize local client edits, reloads, node switching, routing changes, or monitoring installation.
+- Treat IPv6 as a mandatory discovery field, even when the user supplies only IPv4. Before bootstrap, record exactly one state: assigned and approved for configuration/testing; assigned but declined; or unavailable/unknown and awaiting provider-panel confirmation.
+- Preserve one working privileged login path. Do not disable root or password SSH until separate sessions have verified the new key, working root escalation, the reloaded SSH policy, and the provider-console recovery path.
 - Back up a changed config with a timestamp, validate syntax, then reload only the affected service. Do not restart a local proxy client unless the user explicitly asks.
 - Choose Ubuntu 24.04 LTS by default for a new general-purpose VPS. Use the provider image or another supported LTS only when compatibility, an existing fleet, or provider support requires it.
 - Keep user-specific providers, addresses, domains, bot tokens, chat IDs, account data, and routing exceptions out of this skill. Use only runtime configuration with restrictive permissions.
@@ -19,7 +22,7 @@ Use this skill for personal VPS administration. Adapt to the user's actual topol
 
 ## Select the architecture
 
-First inventory the machines and desired outcome. Ask only for missing items: provider, OS, public IPv4/IPv6, current SSH user/port/auth method, cloud-console availability, intended service, and whether changes/restarts are allowed.
+First inventory the machines and desired outcome. Ask only for missing items: provider, OS, public IPv4, current SSH user/port/auth method, cloud-console availability, intended service, and whether changes/restarts are allowed. Even when the user mentions only IPv4, explicitly ask whether the provider assigned IPv6 and whether the user wants it configured and tested.
 
 Choose one path:
 
@@ -61,13 +64,15 @@ Read [references/existing-systems.md](references/existing-systems.md) before wor
 
 ## Workflow
 
-1. **Preflight**: identify the working access route. Record non-secret facts only. Confirm the role of every machine and the user's downtime tolerance.
-2. **Bootstrap**: create a named sudo user and local SSH key only if absent. Test the new access in a separate terminal before hardening. Use the provider console if SSH is unavailable.
-3. **Baseline**: apply least-privilege SSH and firewall rules, automatic security updates with no automatic reboot, log rotation, journal limits, and Docker log limits where Docker is used.
-4. **Deploy**: use the smallest suitable deployment. For a relay, expose only the relay listener; restrict the landing listener to trusted relay addresses. For a standalone app, expose only ports the app needs.
-5. **Validate**: check service state, listening sockets, firewall, remote reachability, disk, and logs. Test an application path, not only ICMP or a public test IP.
-6. **Operate**: use the audit script for read-only reviews. Monitor at several times before declaring one route superior. Keep backups and document rollback.
-7. **Deliver**: when a proxy path is deployed, configure the user's requested local clients, routing, fallbacks, and acceptance tests. A server deployment is not complete until a real client path works. Then explicitly offer opt-in monitoring/reports and a non-secret inventory; do not install either without approval.
+1. **Access discovery**: derive the actual SSH user, port, authentication method, power/IP state, provider firewall, and console/recovery path from the order email, provider panel, or official documentation. Do not assume `root:22`. Check whether local TUN/proxy routing affects SSH before blaming the VPS.
+2. **Preflight**: record non-secret facts only. Confirm every machine's role, IPv4/IPv6 intent, downtime tolerance, and the exact permission scopes granted for this task.
+3. **Bootstrap**: create a named sudo user and local SSH key only if absent. In separate sessions, prove key login and actual root escalation before hardening. Keep the original privileged session open and use the provider console if SSH is unavailable.
+4. **Baseline**: present the required and optional changes, then apply only the approved least-privilege SSH/firewall, security-update, and log-retention baseline. Do not add optional packages or tuning silently.
+5. **Deploy**: show a compact native-systemd versus Docker comparison, recommend one from the host's constraints, and obtain approval before writing. For a proxy, show the REALITY candidate comparison and recommendation before configuring the chosen target.
+6. **Validate**: check service state, sockets, firewall, remote reachability, disk, logs, and each approved IPv4/IPv6 path. Test an application path, not only ICMP or a public test IP.
+7. **Operate**: use the audit script for read-only reviews. Monitor at several times before declaring one route superior. Keep backups and document rollback.
+8. **Deliver**: ask which device, proxy app, and core version the user uses. “You can look” grants read-only inspection only. Propose the exact nodes/groups/rules/files and rollback, and obtain separate approval before any edit, reload, or switch. A server deployment is not complete until an approved real-client path works.
+9. **Handoff**: provide the exact terminal SSH command, sudo model, service/deployment mode, ports, IPv4/IPv6 results, REALITY comparison summary, client status, backup/rollback locations, and any remaining action. Offer monitoring and a non-secret inventory separately; do not install either without approval.
 
 For an existing system, start at **Validate** and **Operate**, not at Bootstrap. Never rerun first-access setup, regenerate credentials, overwrite service configuration, or restart a healthy service merely because the skill was invoked in a new conversation.
 
@@ -76,11 +81,12 @@ For an existing system, start at **Validate** and **Operate**, not at Bootstrap.
 For every configuration change:
 
 1. Capture current configuration and service state.
-2. Save a timestamped backup next to the config.
-3. Validate syntax before reload (`sshd -t`, service-specific config check, or container validation).
-4. Reload rather than restart where possible.
-5. Verify the original access path, service health, listening port, and firewall after the change.
-6. State what changed, what was verified, and any residual risk.
+2. Restate the authorized surface and the exact files, services, rules, or runtime selections that will change. Stop on ambiguity.
+3. Save a timestamped backup next to the config.
+4. Validate syntax before reload (`sshd -t`, service-specific config check, or container validation).
+5. Reload rather than restart where possible, only within the approved scope.
+6. Verify the original access path, service health, listening port, and firewall after the change.
+7. State remote-server changes and local-device changes separately, with verification and residual risk.
 
 ## Update Awareness
 
@@ -93,7 +99,7 @@ Never force an update, and never treat a plugin update as permission to modify a
 Run [scripts/vps-audit.sh](scripts/vps-audit.sh) for a read-only report after a server is reachable by SSH key:
 
 ```bash
-bash scripts/vps-audit.sh --host 203.0.113.10 --user admin --port 22 --identity ~/.ssh/id_ed25519
+bash scripts/vps-audit.sh --host "$VPS_IP" --user "$SSH_USER" --port "$SSH_PORT" --identity "$SSH_KEY"
 ```
 
 For password-only first access, use normal interactive `ssh` or the provider console. Do not pass a password on a command line.

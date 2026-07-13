@@ -2,6 +2,20 @@
 
 All notable changes to VPSOps are documented here.
 
+## [0.1.3] - 2026-07-13
+
+### Added
+
+- Provider-aware first-access discovery from order email, panel, firewall, documented SSH port/user, and console recovery, with beginner-oriented failure classification.
+- Mandatory IPv6 availability/intent question, independent dual-stack validation, REALITY candidate comparison, local client discovery, and copy-ready SSH handoff.
+- Explicit native systemd versus Docker decision criteria.
+
+### Fixed
+
+- Prevented SSH hardening before both key login and root escalation succeed in separate post-reload sessions.
+- Separated authorization for VPS, provider panel, local files, active proxy runtime, routing, and monitoring.
+- Prevented optional packages/tuning, client edits, reloads, group switching, and routing changes without exact prior approval.
+
 ## [0.1.2] - 2026-07-13
 
 ### Added

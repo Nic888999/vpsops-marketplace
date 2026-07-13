@@ -7,8 +7,9 @@ Use only when the user explicitly asks for a personal proxy, landing service, or
 ## Deployment Rules
 
 - Generate UUIDs, Reality keypairs, short IDs, and client material at deployment time. Keep them only in protected runtime configuration and the user's requested client profile; never place them in the skill, repository, inventory, report, or terminal output.
-- Use Docker only when it fits the host. Pin the Xray image to a reviewed version or digest; do not use `latest` for unattended deployment.
+- Before writing, show both deployment modes, recommend one, and record the user's approval. Native Xray is appropriate for a small single-purpose host when it uses a verified fixed release, a dedicated service account, restrictive systemd settings, protected configuration, bounded logs, and versioned binary/config rollback. Docker is appropriate when the fleet already uses containers or reproducible migration matters; pin the image version/digest, avoid privileged mode and unnecessary host networking/mounts, cap logs, and preserve a compose/config rollback. Docker is not automatically safer or faster and adds daemon, networking, and firewall complexity. Do not silently choose either mode.
 - Pick an unused listener port deliberately, add only the required firewall rule, and restrict a landing listener to known relay addresses when relays exist.
+- Ask whether IPv6 is assigned and desired even when the user supplied only IPv4. Configure and expose IPv6 only after verifying its address, default route, provider firewall, host firewall, listener behavior, and real-client reachability. Keep IPv4 and IPv6 independently selectable until both pass.
 - Keep the relay as a layer-4 HAProxy forwarder only. It must forward only to the selected landing listener and must not become an open proxy.
 - Back up the previous service configuration, validate generated configuration, start/reload only the affected service, and verify the previous access path remains usable.
 
@@ -22,6 +23,8 @@ For normal proxy use, each candidate must be outside the restricted destination 
 
 Copy [reality-target-check.sh](../scripts/reality-target-check.sh) to a temporary location on the target VPS and run it against at least three region-appropriate candidates. The script is a preflight filter, not proof of a working proxy. Reject a candidate if any required TLS check fails or repeated samples are unstable; rank a redirect warning below an otherwise equivalent non-redirecting candidate. If no candidate is eligible, stop and report the evidence instead of deploying with a fallback default.
 
+Before configuring Xray, show the user a compact comparison for every candidate: hostname, resolved IP, three-sample stability, TLS 1.3, `h2`, certificate result, HTTP/redirect status, representative handshake timing, and PASS/WARN/FAIL. Summarize the recommendation and reason, then obtain approval for the selected target. Do not skip this evidence because one candidate looks familiar or passed once.
+
 Set the Xray REALITY `target` and allowed `serverNames` consistently from the selected result. Back up an existing target before replacement. Validate the Xray configuration, then test the node from a real client through the intended network. The client must complete the REALITY handshake, expose the intended egress IP, and successfully fetch a lightweight 2xx/204 endpoint through the proxy. A running container, open TCP port, successful direct HTTPS request, or preflight result is not sufficient. Keep the previous target and client profile until this test passes.
 
 Treat target compatibility as changeable external state. Monitoring may re-run the TLS/ALPN and redirect-observation checks, then alert on a required TLS failure, instability, or behavior change; it must not rotate the target automatically. A replacement requires the same scan, configuration validation, client test, and rollback path.
@@ -30,4 +33,4 @@ Do not use ordinary Cloudflare DNS proxying to hide a raw REALITY TCP listener; 
 
 ## Completion Tests
 
-Verify container/service status, listener and firewall scope, relay-to-landing connectivity where applicable, actual client connection, intended outbound IP, fallback path, and the requested client/app behavior. Keep the old path until all tests pass and the user approves retirement.
+Verify native systemd or container status, listener and firewall scope, every approved IPv4/IPv6 path, relay-to-landing connectivity where applicable, actual client connection, intended outbound IP, fallback path, and the requested client/app behavior. Keep the old path until all tests pass and the user approves retirement.

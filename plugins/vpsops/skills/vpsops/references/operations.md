@@ -12,6 +12,8 @@ Apply only after initial access is proven:
 - regular `fstrim` where supported;
 - no unnecessary panel, database, or container exposed to the internet.
 
+Present the baseline before applying it. Treat fail2ban, SSH port changes, swap creation, BBR/sysctl or other TCP tuning, kernel changes, panels, monitoring, and reboots as optional changes that require a reason and separate approval. Do not install them merely because they appear in a common tutorial.
+
 Use explicit package versions or digest-pinned images for critical deployments. Avoid `latest` for unattended production updates. Check image upgrades deliberately, review release notes, then deploy and verify.
 
 For an explicitly requested personal proxy or relay, use VLESS + TCP + REALITY as the standard Xray deployment. Use HAProxy only for a separate TCP relay. Treat a change to VMess, Trojan, AnyTLS, or another protocol as an architecture decision: explain the reason, back up the current configuration, validate the replacement, and retain a tested rollback path.

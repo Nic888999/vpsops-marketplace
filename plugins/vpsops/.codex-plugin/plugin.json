@@ -1,6 +1,6 @@
 {
   "name": "vpsops",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Secure VPS setup, client delivery, relay design, monitoring, auditing, and maintenance.",
   "author": {
     "name": "Nic"
