@@ -15,6 +15,7 @@ Use this skill for personal VPS administration. Adapt to the user's actual topol
 - Back up a changed config with a timestamp, validate syntax, then reload only the affected service. Do not restart a local proxy client unless the user explicitly asks.
 - Choose Ubuntu 24.04 LTS by default for a new general-purpose VPS. Use the provider image or another supported LTS only when compatibility, an existing fleet, or provider support requires it.
 - Keep user-specific providers, addresses, domains, bot tokens, chat IDs, account data, and routing exceptions out of this skill. Use only runtime configuration with restrictive permissions.
+- Never hard-code or guess a REALITY target. Select and validate candidates from the target VPS, then require a real-client handshake before accepting the deployment.
 
 ## Select the architecture
 
@@ -39,7 +40,7 @@ Read only the relevant reference before implementing it:
 
 | Need | Reference | Rule |
 | --- | --- | --- |
-| Deploy a personal VLESS + TCP + REALITY service | [references/proxy-deployment.md](references/proxy-deployment.md) | Generate runtime secrets on the server; pin Xray; test a real client before retiring a path. |
+| Deploy a personal VLESS + TCP + REALITY service | [references/proxy-deployment.md](references/proxy-deployment.md) | Scan region-appropriate targets from the VPS; generate runtime secrets on the server; pin Xray; test a real client before retiring a path. |
 | Deliver local proxy clients and routing | [references/client-delivery.md](references/client-delivery.md) | Preserve the current client; back up first; user controls restart. |
 | Daily reports, alerts, traffic, expiry tracking | [references/monitoring.md](references/monitoring.md) | Choose a stable controller; external observation is optional, not assumed. |
 | Add, replace, retire, refund, or restore VPS nodes | [references/lifecycle.md](references/lifecycle.md) | Maintain a user-approved non-secret inventory and a tested rollback. |
@@ -102,6 +103,8 @@ For password-only first access, use normal interactive `ssh` or the provider con
 - Prefer measured reliability over a single low latency result. Compare timeout rate, median, P95, loss, and real application loading across time windows.
 - IPv6 is an additional path, not an unconditional replacement for IPv4. Keep both only when each route is independently reachable and stable from the client network.
 - For an explicitly requested personal proxy or relay, default to VLESS + TCP + REALITY. Do not substitute VMess, Trojan, AnyTLS, or another protocol merely because it is newer or popular in a tutorial. Change protocol only for a stated compatibility, security, or measured performance reason.
+- For REALITY, reject fixed tutorial targets and popularity-based choices. Require TLS 1.3, ALPN `h2`, valid certificate verification, repeated reachability from the VPS, and an actual client connection. Prefer a hostname that does not redirect; treat HTTP redirect behavior as a warning and ranking penalty because it does not by itself prove whether the REALITY handshake works. A target that worked elsewhere is only a candidate.
 - Default to daily security updates, weekly package-cache cleanup, and no automatic reboot. Schedule operating-system upgrades and major container image upgrades deliberately.
 - Keep monitoring data only as long as it serves a decision. Set retention and stop temporary high-frequency probes once the comparison is complete.
+- For quota monitoring, confirm the provider's reset timestamp/timezone and whether ingress, egress, or both directions are billed. If monitoring starts mid-cycle, seed it from the provider's current usage plus subsequent local counter deltas; never report a collection failure as zero usage.
 - A monitoring controller cannot alert when it is itself offline. Add an independent observer only when the user has or chooses a separate machine; otherwise state this coverage gap plainly.

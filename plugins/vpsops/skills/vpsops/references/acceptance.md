@@ -12,6 +12,9 @@ Test separately:
 4. Primary, fallback, and every user-requested routing exception.
 5. Mainland direct and DNS behavior.
 6. TUN-only apps and IPv6 only when each is enabled.
+7. For REALITY: target TLS 1.3, ALPN `h2`, certificate verification, redirect warning/ranking, repeated target reachability, Xray configuration validation, and an actual client handshake through the deployed node.
+
+Do not accept a REALITY deployment because the listener is open or the container is healthy. Fetch a lightweight 2xx/204 endpoint through the real client, verify the intended egress IP, and keep the previous target/profile until the replacement passes.
 
 Do not infer a user's return path, app experience, or a "premium route" from a test IP alone.
 

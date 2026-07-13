@@ -9,6 +9,8 @@ Collect only in the active session:
 - private-key file path if the provider issued a key;
 - whether changing a cloud-init key requires a full power cycle.
 
+Before accepting a previously unseen SSH host key, compare its fingerprint with the provider console or another trusted channel when available. `StrictHostKeyChecking=accept-new` is trust-on-first-use, not identity verification.
+
 Do not place passwords or private-key contents in notes, scripts, audit reports, or command history.
 
 ## Password-first provider
