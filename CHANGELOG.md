@@ -2,6 +2,12 @@
 
 All notable changes to VPSOps are documented here.
 
+## [0.2.1] - 2026-07-15
+
+### Fixed
+
+- Made the first-response access checklist mandatory, including IPv6, scope boundaries, provider recovery, and an explicit TUN/proxy access-path choice.
+
 ## [0.2.0] - 2026-07-15
 
 ### Changed

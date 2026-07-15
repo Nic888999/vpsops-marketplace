@@ -13,6 +13,12 @@ This skill is explicit-use only. Do not invoke it merely because a project, titl
 
 Once explicitly invoked, apply this workflow only to the real infrastructure action the user requested. A named reference server authorizes read-only comparison only; it does not authorize copying its configuration, changing a different server, or modifying a local proxy client.
 
+## First-Response Contract
+
+Before running SSH or inspecting a local client, ask only for missing facts: provider and current public address; SSH user, port, and authentication method; provider console/recovery path; IPv6 state and intent; target role; any reference-host scope; allowed remote changes; and allowed local changes. Do not request passwords or private-key contents.
+
+If TUN/proxy interception is reported, ask the user to choose exactly one access path before any local inspection: provider console/rescue terminal (recommended), user-managed temporary TUN pause/direct-network test, one-off local route, or persistent client rule. Do not reduce this to a generic promise to "find a direct connection".
+
 ## Non-negotiable rules
 
 - Treat credentials, private keys, client subscription data, and service secrets as session-only. Never write them into the skill, scripts, reports, git, or terminal output.
@@ -72,7 +78,7 @@ Read [references/existing-systems.md](references/existing-systems.md) before wor
 
 ## Workflow
 
-1. **Access discovery**: derive the actual SSH user, port, authentication method, power/IP state, provider firewall, and console/recovery path from the order email, provider panel, or official documentation. Do not assume `root:22`. In the first response, explicitly collect IPv6 state and the permitted remote/local scopes. If local TUN/proxy routing affects SSH, stop at an access-options decision; do not recommend or change the local client by default.
+1. **Access discovery**: derive the actual SSH user, port, authentication method, power/IP state, provider firewall, and console/recovery path from the order email, provider panel, or official documentation. Do not assume `root:22`. Follow the first-response contract. If local TUN/proxy routing affects SSH, stop at an access-options decision; do not recommend or change the local client by default.
 2. **Preflight**: record non-secret facts only. Confirm every machine's role, IPv4/IPv6 intent, downtime tolerance, and the exact permission scopes granted for this task. When a reference VPS is named, report a read-only comparison and ask which aspects, if any, are approved for reuse.
 3. **Bootstrap**: create a named sudo user and local SSH key only if absent. In separate sessions, prove key login and actual root escalation before hardening. Keep the original privileged session open and use the provider console if SSH is unavailable.
 4. **Baseline**: present a per-item approval matrix with purpose, impact, rollback, and required/optional status. Apply only the selected least-privilege SSH/firewall, security-update, and log-retention changes. Do not add optional packages, discovery-service changes, future listener rules, or tuning silently.

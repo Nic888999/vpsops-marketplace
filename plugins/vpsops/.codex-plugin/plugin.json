@@ -1,6 +1,6 @@
 {
   "name": "vpsops",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Explicit-use workflow for real VPS setup, relays, client delivery, monitoring, auditing, and maintenance.",
   "author": {
     "name": "Nic"
