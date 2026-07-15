@@ -12,6 +12,8 @@ Server deployment authorization does not authorize local work. Inspect the clien
 
 Phrases such as “you can look,” “check my client,” or “help me configure later” authorize inspection or planning only. They do not authorize a file edit, runtime API call, reload, restart, profile activation, node switch, or routing change.
 
+When the only immediate problem is SSH blocked by the local proxy/TUN, use the access-unblock decision in `bootstrap.md`. Do not treat it as client delivery and do not make a persistent direct rule by default.
+
 Prefer the user's working client. For a new choice, verify current platform availability first. Typical defaults are a Mihomo-compatible client on macOS/Windows, sing-box where its current core supports the required configuration, and Shadowrocket for a simple iOS import workflow. Do not force an app change because a tutorial prefers it.
 
 ## Routing Model
@@ -32,6 +34,7 @@ Default mainland destinations to direct and intended external traffic to `Primar
 - Keep IPv4 and IPv6 independently selectable until both pass real-device tests. Do not force IPv6 merely because its latency is lower.
 - Prefer an isolated temporary test profile or a user-imported node before integrating with an active profile. Protect and remove temporary client material after the test.
 - Validate configuration before reload where the client supports it. Do not edit the active runtime, reload/restart/quit the client, switch a selected group, or alter routing without explicit approval for that exact action; otherwise tell the user how to perform the manual action.
+- Treat activating a subscription/profile and selecting a proxy node as state-changing actions. Do not perform either merely to test a new relay. If the user has not authorized local testing, complete only server-side validation and mark device acceptance as pending.
 - Never put private keys, access tokens, subscription URLs, UUIDs, or personal routing history into the skill, inventory, Git, or report.
 
 ## Acceptance And Handoff

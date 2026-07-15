@@ -2,6 +2,20 @@
 
 All notable changes to VPSOps are documented here.
 
+## [0.2.0] - 2026-07-15
+
+### Changed
+
+- Disabled implicit invocation globally. VPSOps now requires an explicit `$vpsops` invocation or skill-entry action, so VPS-related software projects, documentation, panels, and generic code do not trigger infrastructure workflows.
+- Added a reference-host comparison gate and a per-item baseline approval matrix.
+
+### Fixed
+
+- Prevented local TUN/proxy bypass, generated-runtime edits, subscription/profile activation, and node selection from being used to unblock or test SSH without a separate local authorization.
+- Prevented copying ports, firewall rules, or client routing from a reference VPS without an approved reuse plan.
+- Prevented opening future listener ports and optional discovery-service changes during broad "hardening" requests.
+- Required an exact SSH command in final handoff even when client acceptance remains pending.
+
 ## [0.1.3] - 2026-07-13
 
 ### Added

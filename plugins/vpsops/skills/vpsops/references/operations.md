@@ -12,7 +12,11 @@ Apply only after initial access is proven:
 - regular `fstrim` where supported;
 - no unnecessary panel, database, or container exposed to the internet.
 
-Present the baseline before applying it. Treat fail2ban, SSH port changes, swap creation, BBR/sysctl or other TCP tuning, kernel changes, panels, monitoring, and reboots as optional changes that require a reason and separate approval. Do not install them merely because they appear in a common tutorial.
+Before writing, show a baseline approval matrix. For every item, state purpose, exact host/file/service, user impact, rollback, and whether it is required or optional. "Harden the server" does not authorize every possible hardening action.
+
+Treat fail2ban, SSH port changes, swap creation, BBR/sysctl or other TCP tuning, kernel changes, panels, monitoring, disabling LLMNR/mDNS or other discovery services, and reboots as optional changes that require a reason and separate approval. Do not install or disable them merely because they appear in a common tutorial or another VPS template.
+
+Do not open a future listener port. Add a firewall rule only when its corresponding approved service is ready to listen, then verify the listener, firewall scope, and rollback together.
 
 Use explicit package versions or digest-pinned images for critical deployments. Avoid `latest` for unattended production updates. Check image upgrades deliberately, review release notes, then deploy and verify.
 

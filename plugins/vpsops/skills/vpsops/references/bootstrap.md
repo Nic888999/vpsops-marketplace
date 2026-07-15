@@ -15,6 +15,12 @@ Do not move from access discovery into bootstrap until IPv6 is recorded as `assi
 
 For a beginner, guide them through the provider panel or official documentation using the provider's actual labels. Ask for a screenshot when needed. Do not tell them merely to "check port 22," perform a broad port scan, or reboot repeatedly. Check whether a local VPN, Clash/sing-box TUN mode, proxy, or route captures the SSH destination; inspecting or changing that local client is a separate permission scope.
 
+## Local Access Unblock Decision
+
+When a local TUN/proxy intercepts SSH, stop before changing the workstation. Default to the provider console/rescue terminal. If the user prefers a local solution, ask them to choose: their manual temporary TUN pause or direct-network test; a one-off direct route; or a persistent client rule. Explain the affected application/configuration, whether it interrupts traffic, and how it is removed. Do not present a persistent direct rule as the default fix.
+
+Do not inspect or write a Clash/sing-box/Mihomo file, generated runtime configuration, operating-system route, or client API merely because it would make SSH reachable. Require the user to select an option and explicitly authorize the exact local inspection or write scope, any backup, runtime reload, profile activation, or node selection. Never guess whether a global script, profile source, subscription, or generated runtime file is the canonical source; establish that read-only first. Do not patch or reload a generated runtime configuration directly.
+
 Before accepting a previously unseen SSH host key, compare its fingerprint with the provider console or another trusted channel when available. `StrictHostKeyChecking=accept-new` is trust-on-first-use, not identity verification.
 
 Do not ask for, echo, or place passwords or private-key contents in chat, notes, scripts, audit reports, or command history. Use an interactive password prompt or provider console. If the user already exposed a password, do not repeat it; rotate it only after a verified recovery path exists.

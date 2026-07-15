@@ -1,7 +1,7 @@
 {
   "name": "vpsops",
-  "version": "0.1.3",
-  "description": "Secure VPS setup, client delivery, relay design, monitoring, auditing, and maintenance.",
+  "version": "0.2.0",
+  "description": "Explicit-use workflow for real VPS setup, relays, client delivery, monitoring, auditing, and maintenance.",
   "author": {
     "name": "Nic"
   },
@@ -19,8 +19,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "VPSOps",
-    "shortDescription": "Secure VPS setup, clients, relays, and monitoring.",
-    "longDescription": "A reusable workflow for safe access, deployments, local proxy clients, optional relay topologies, monitoring, and repeatable health audits.",
+    "shortDescription": "Explicit-use secure VPS operations.",
+    "longDescription": "An explicitly invoked workflow for safe real-server access, deployments, local proxy clients, optional relay topologies, monitoring, and repeatable health audits.",
     "developerName": "Nic",
     "category": "Productivity",
     "capabilities": [

@@ -16,6 +16,12 @@ client -> relay public listener -> authenticated/encrypted service on landing ->
 - Landing: allow SSH as needed; allow the service port only from known relay addresses. Do not expose an unnecessary direct listener.
 - Keep an independently tested fallback: another relay, direct landing access, or a separate provider. Do not make a fallback depend on the same failing relay.
 
+## Reference Host Comparison
+
+When the user says to "reference" an existing relay or landing VPS, inspect it read-only and report a comparison before copying anything. State: source role and service mode; listener and backend boundary; firewall allowlist; address-family choice; logging/maintenance policy; and the requested new machine role. Mark each item as `reuse`, `adapt`, `exclude`, or `unknown`, and ask the user to approve the copy plan.
+
+Do not infer that a reference authorizes its port numbers, firewall rules, HAProxy/Xray configuration, client nodes, proxy groups, direct rules, active-node selection, or local profile activation. A local-client change always needs its own approval.
+
 ## Personal Proxy Default
 
 Apply this section only when the user explicitly requests a personal proxy, landing server, or relay path. The default stack is **VLESS + TCP + REALITY** on Xray. When a relay is needed, use HAProxy as a layer-4 TCP forwarder to the fixed landing listener.

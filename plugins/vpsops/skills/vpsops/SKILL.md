@@ -1,11 +1,17 @@
 ---
 name: vpsops
-description: Securely plan, bootstrap, deploy, relay, audit, monitor, and maintain personal VPS services. Use for first SSH access, VLESS Reality, optional relays, local proxy clients, Telegram reporting, lifecycle changes, and repeatable health checks.
+description: Use only when the user explicitly invokes `$vpsops` to access, audit, secure, deploy, relay, monitor, retire, or configure a real personal VPS service or its local proxy client. Do not use for VPS-related apps, panels, websites, documents, scripts, billing, research, comparisons, dashboards, or generic code.
 ---
 
 # VPS Relay Operations
 
 Use this skill for personal VPS administration. Adapt to the user's actual topology; a relay is optional.
+
+## Invocation Boundary
+
+This skill is explicit-use only. Do not invoke it merely because a project, title, prompt, file, or code mentions VPS, server, IP, SSH, Docker, proxy, VLESS, relay, monitoring, or networking. A VPS-related product, panel, website, document, budget, comparison, test script, or generic coding task is outside scope unless the user explicitly writes `$vpsops`.
+
+Once explicitly invoked, apply this workflow only to the real infrastructure action the user requested. A named reference server authorizes read-only comparison only; it does not authorize copying its configuration, changing a different server, or modifying a local proxy client.
 
 ## Non-negotiable rules
 
@@ -13,6 +19,8 @@ Use this skill for personal VPS administration. Adapt to the user's actual topol
 - Do not ask the user to paste a password or private-key contents into chat. Use an interactive prompt, provider console, or an existing local key path. If a secret was already shared, do not repeat it and recommend rotation after a recovery path is verified.
 - Start read-only unless the user explicitly authorizes changes. State the planned change and rollback before writing.
 - Treat the VPS, provider panel, local files, active proxy runtime, and monitoring as separate permission scopes. Approval to deploy a VPS does not authorize local client edits, reloads, node switching, routing changes, or monitoring installation.
+- If local TUN/proxy routing blocks SSH, prefer the provider console first. Require the user to choose console, manual temporary TUN pause, one-off route, or persistent client rule before recommending or changing a local access path. Do not alter a local TUN/proxy, local routing, or client configuration merely to make SSH work.
+- Treat an existing VPS used as a template as evidence, not a copy source. First compare its topology and policy with the new role, then obtain explicit approval for each remote and local change.
 - Treat IPv6 as a mandatory discovery field, even when the user supplies only IPv4. Before bootstrap, record exactly one state: assigned and approved for configuration/testing; assigned but declined; or unavailable/unknown and awaiting provider-panel confirmation.
 - Preserve one working privileged login path. Do not disable root or password SSH until separate sessions have verified the new key, working root escalation, the reloaded SSH policy, and the provider-console recovery path.
 - Back up a changed config with a timestamp, validate syntax, then reload only the affected service. Do not restart a local proxy client unless the user explicitly asks.
@@ -64,15 +72,19 @@ Read [references/existing-systems.md](references/existing-systems.md) before wor
 
 ## Workflow
 
-1. **Access discovery**: derive the actual SSH user, port, authentication method, power/IP state, provider firewall, and console/recovery path from the order email, provider panel, or official documentation. Do not assume `root:22`. Check whether local TUN/proxy routing affects SSH before blaming the VPS.
-2. **Preflight**: record non-secret facts only. Confirm every machine's role, IPv4/IPv6 intent, downtime tolerance, and the exact permission scopes granted for this task.
+1. **Access discovery**: derive the actual SSH user, port, authentication method, power/IP state, provider firewall, and console/recovery path from the order email, provider panel, or official documentation. Do not assume `root:22`. In the first response, explicitly collect IPv6 state and the permitted remote/local scopes. If local TUN/proxy routing affects SSH, stop at an access-options decision; do not recommend or change the local client by default.
+2. **Preflight**: record non-secret facts only. Confirm every machine's role, IPv4/IPv6 intent, downtime tolerance, and the exact permission scopes granted for this task. When a reference VPS is named, report a read-only comparison and ask which aspects, if any, are approved for reuse.
 3. **Bootstrap**: create a named sudo user and local SSH key only if absent. In separate sessions, prove key login and actual root escalation before hardening. Keep the original privileged session open and use the provider console if SSH is unavailable.
-4. **Baseline**: present the required and optional changes, then apply only the approved least-privilege SSH/firewall, security-update, and log-retention baseline. Do not add optional packages or tuning silently.
+4. **Baseline**: present a per-item approval matrix with purpose, impact, rollback, and required/optional status. Apply only the selected least-privilege SSH/firewall, security-update, and log-retention changes. Do not add optional packages, discovery-service changes, future listener rules, or tuning silently.
 5. **Deploy**: show a compact native-systemd versus Docker comparison, recommend one from the host's constraints, and obtain approval before writing. For a proxy, show the REALITY candidate comparison and recommendation before configuring the chosen target.
-6. **Validate**: check service state, sockets, firewall, remote reachability, disk, logs, and each approved IPv4/IPv6 path. Test an application path, not only ICMP or a public test IP.
+6. **Validate**: check service state, sockets, firewall, remote reachability, disk, logs, and each approved IPv4/IPv6 path. Test an application path, not only ICMP or a public test IP. Keep server-path validation separate from local-client validation.
 7. **Operate**: use the audit script for read-only reviews. Monitor at several times before declaring one route superior. Keep backups and document rollback.
-8. **Deliver**: ask which device, proxy app, and core version the user uses. “You can look” grants read-only inspection only. Propose the exact nodes/groups/rules/files and rollback, and obtain separate approval before any edit, reload, or switch. A server deployment is not complete until an approved real-client path works.
-9. **Handoff**: provide the exact terminal SSH command, sudo model, service/deployment mode, ports, IPv4/IPv6 results, REALITY comparison summary, client status, backup/rollback locations, and any remaining action. Offer monitoring and a non-secret inventory separately; do not install either without approval.
+8. **Deliver**: ask which device, proxy app, and core version the user uses. “You can look” grants read-only inspection only. Propose the exact nodes/groups/rules/files and rollback, and obtain separate approval before any edit, reload, activation, or switch. Do not use an active profile as a test surface without explicit approval.
+9. **Handoff**: provide the exact terminal SSH command, sudo model, service/deployment mode, ports, IPv4/IPv6 results, REALITY comparison summary, client status or pending-client status, backup/rollback locations, and any remaining action. Do not call the server work complete without the SSH command. Offer monitoring and a non-secret inventory separately; do not install either without approval.
+
+### TUN / Proxy Stop Gate
+
+When the user reports that a local TUN/proxy blocks SSH, the first response must stop and ask the user to choose one path: provider console/rescue terminal (recommended); user-managed temporary TUN pause/direct-network test; a one-off local route; or a persistent client rule. Do not inspect local client files or runtime, run a local route command, recommend a direct rule as the preferred fix, activate a profile, or select a node until the user has chosen a path and explicitly authorized that local scope.
 
 For an existing system, start at **Validate** and **Operate**, not at Bootstrap. Never rerun first-access setup, regenerate credentials, overwrite service configuration, or restart a healthy service merely because the skill was invoked in a new conversation.
 
